@@ -27,21 +27,22 @@ export default {
       let that = this;
         that.$store.commit("saveToken", "");
         this.$refs.loginForm.validate(valid => {
-        if (valid) {
+            if (valid) {
           this.$api.get(
             "Login/Token",
             { name: that.user.name, pass: that.user.pass },
             r => {
-              if (r.data.success) {
-                var token = r.data.token;
+              if (r.success) {
+                var token = r.token;
                 that.$store.commit("saveToken", token);
                 this.$notify({
                   type: "success",
                   message: "欢迎你," + this.user.name + "!",
                   duration: 3000
                 });
-                console.log(that.$store.state.token);
-                this.$router.replace("/");
+                  console.log(that.$store.state.token);
+                  console.log(that.$route.query.redirect);
+                 this.$router.replace(that.$route.query.redirect? that.$route.query.redirect:"/");
               } else {
                 this.$message({
                   type: "error",
@@ -65,7 +66,10 @@ export default {
   data() {
     return {
         isLogin:false,
-      user: {},
+      user: {
+          name:"admins",
+          pass:"admins",
+      },
       rules: {
         name: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
         pass: [{ required: true, message: "密码不能为空", trigger: "blur" }]
@@ -73,7 +77,8 @@ export default {
     };
   },
     created() {
-        if (window.localStorage.Token&&window.localStorage.Token.length>=128){
+      var that=this;
+        if (that.$store.state.token&&that.$store.state.token.length>=128){
             this.isLogin=true;
         }
     }

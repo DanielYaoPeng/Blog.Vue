@@ -3,11 +3,15 @@
 <template>
     <div class="parent">
         <h3>问卷调查</h3>
+        子：
         <child :formData.sync="form"></child>
+        <hr/>
         <div class="">
-            <p>姓名：{{form.name}}</p>
-            <p>年龄：{{form.age}}</p>
-            <p>地址：{{form.address}}</p>
+            父：
+            <p>姓名：{{ form.name }}</p>
+            <p>年龄：{{ form.age }}</p>
+            <p>地址：{{ form.address }}</p>
+            <button @click="ageAdd">父Age-1</button>
         </div>
     </div>
 </template>
@@ -28,6 +32,12 @@ export default {
         age: ""
       }
     };
+  },
+  methods: {
+    ageAdd: function() {
+      this.form.age--;
+      console.log(this.$router)
+    }
   }
 };
 </script>
